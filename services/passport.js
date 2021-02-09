@@ -11,10 +11,9 @@ passport.use(
       clientSecret: keys.googleClientSecret,
       callbackURL: "/auth/google/callback",
     },
-    (accessToken, refreshToken, profile, done) => {
-      console.log("accessToken", accessToken);
-      console.log("refreshToken", refreshToken);
-      console.log("profile", profile);
+    async (accessToken, refreshToken, profile, done) => {
+      const user = await User.findOne({ googgleId: profile.id });
+      if (!user) new User({ googleId: profile.id }).save();
     }
   )
 );
