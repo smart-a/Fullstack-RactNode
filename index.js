@@ -32,12 +32,12 @@ require("./routes/billingRoute")(app);
 
 //Making the client side (React App) to work with Express App (Node App) only on production
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
+  app.use(express.static(path.join(__dirname, "client", "build")));
 
   const path = require("path");
-  app.get("*", (req, res) => {
-    // res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-    res.sendFile(path.resolve(__dirname, "..", "public", "index.html"));
+  app.get("/*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+    // res.sendFile(path.resolve(__dirname, "..", "public", "index.html"));
   });
 }
 
