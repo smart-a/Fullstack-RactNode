@@ -3,6 +3,7 @@ const requireCredits = require("../middlewares/requireCredits");
 const mongoose = require("mongoose");
 const Survey = mongoose.model("surveys");
 const Mailer = require("../services/Mailer");
+const surveyTemplate = require("../services/emailTemplates/surveyTemplate");
 
 module.exports = (app) => {
   app.post("api/surveys", [requireLogin, requireCredits], async (req, res) => {
@@ -19,6 +20,6 @@ module.exports = (app) => {
       dateSent: Date.now(),
     }).save();
 
-    const mailer = new Mailer();
+    const mailer = new Mailer(survey, surveyTemplate(survey));
   });
 };
