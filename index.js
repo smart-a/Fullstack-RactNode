@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const keys = require("./config/keys");
 const { ppid } = require("process");
 require("./models/User");
+require("./models/Survey");
 require("./services/passport");
 
 mongoose.connect(keys.mongoURI, {
@@ -29,6 +30,7 @@ app.use(passport.session());
 
 require("./routes/authRoutes")(app);
 require("./routes/billingRoute")(app);
+require("./routes/surveyRoutes")(app);
 
 //Making the client side (React App) to work with Express App (Node App) only on production
 if (process.env.NODE_ENV === "production") {
