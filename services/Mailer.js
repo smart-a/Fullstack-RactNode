@@ -7,7 +7,7 @@ class Mailer extends helper.Mail {
     super();
 
     this.sgApi = sendGrid(keys.sendGridKey);
-    this.from_email = new helper.Email("no-reply@reactNode.com");
+    this.from_email = new helper.Email("abeeb.adesoye@outsourceglobal.com");
     this.subject = subject;
     this.body = new helper.Content("text/html", content);
     this.recipients = this.formatAddressess(recipients);
