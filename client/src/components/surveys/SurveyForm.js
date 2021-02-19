@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Form, Field } from "react-final-form";
 import { Link } from "react-router-dom";
 import SurveyField from "./SurveyField";
+import validateEmails from "../../Utiles/validateEmails";
 
 const FIELDS = [
   { label: "Survey Title", name: "title" },
@@ -36,8 +37,13 @@ class SurveyForm extends Component {
     const validate = (values) => {
       const errors = {};
 
-      for (let value in values)
-        if (!values[value]) errors[value] = `You must provide a ${value}`;
+      //Validate recipients/ emails
+      errors.recipients = validateEmails(values.recipients || "");
+
+      //Require all fields
+      for (const { label, name } of FIELDS) {
+        if (!values[name]) errors[name] = `You must provide value for ${label}`;
+      }
 
       return errors;
     };

@@ -2,11 +2,14 @@
 
 import React from "react";
 
-export default ({ input, label }) => {
+export default ({ input, label, meta }) => {
   return (
-    <div>
+    <div style={{ marginBottom: "10px", marginTop: "10px" }}>
       <label>{label}: </label>
       <input {...input} placeholder={label} />
+      {meta.error && meta.touched && (
+        <span className="red-text">{meta.error}</span>
+      )}
     </div>
   );
 };
