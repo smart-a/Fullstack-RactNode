@@ -9,6 +9,7 @@ export default (emails) => {
       ? emails.slice(0, emails.length - 1)
       : emails;
 
+  //Check for invalid emails
   const invalidEmails = refinedEmails
     .split(",")
     .map((email) => email.trim())
