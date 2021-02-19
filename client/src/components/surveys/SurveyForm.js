@@ -30,9 +30,9 @@ class SurveyForm extends Component {
       );
     };
 
-    const onSubmit = (values) => {
-      alert(JSON.stringify(values));
-    };
+    // const onSubmit = () => {
+    //   this.props.onSurveySubmit();
+    // };
 
     const validate = (values) => {
       const errors = {};
@@ -50,7 +50,7 @@ class SurveyForm extends Component {
 
     return (
       <Form
-        onSubmit={onSubmit}
+        onSubmit={this.props.onSurveySubmit}
         validate={validate}
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
