@@ -5,8 +5,8 @@ import React from "react";
 const FIELDS = [
   { label: "Survey Title", name: "title" },
   { label: "Subject", name: "subject" },
-  { label: "Email Body", name: "body" },
-  { label: "Emails", name: "recipients" },
+  { label: "Body", name: "body" },
+  { label: "Recipients List", name: "recipients" },
 ];
 
 const SurveyField = ({ input, label, meta }) => {

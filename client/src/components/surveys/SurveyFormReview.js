@@ -1,10 +1,12 @@
 //Shows user inputs for review
 
 import React from "react";
-import { Form, Field } from "react-final-form";
 import { FIELDS } from "./SurveyField";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import * as actions from "../../actions";
 
-const SurveyFormReview = ({ onCancel, values }) => {
+const SurveyFormReview = ({ onCancel, values, submitSurvey, history }) => {
   const renderValues = () => {
     return (
       <div>
@@ -20,28 +22,25 @@ const SurveyFormReview = ({ onCancel, values }) => {
     );
   };
   return (
-    <Form
-      onSubmit={() => {}}
-      render={({ handleSubmit }) => (
-        <form onSubmit={handleSubmit}>
-          <h2>Survey Review</h2>
-          {renderValues()}
-          <button
-            className="yellow darken-3 btn-flat white-text"
-            onClick={onCancel}
-          >
-            Back
-            <i className="material-icons left">arrow_back</i>
-          </button>
-
-          <button className="green darken-3 btn-flat white-text right">
-            Finish
-            <i className="material-icons right">done_all</i>
-          </button>
-        </form>
-      )}
-    />
+    <div>
+      <h2>Survey Review</h2>
+      {renderValues()}
+      <button
+        className="yellow darken-3 btn-flat white-text"
+        onClick={onCancel}
+      >
+        Back
+        <i className="material-icons left">arrow_back</i>
+      </button>
+      <button
+        className="green darken-3 btn-flat white-text right"
+        onClick={() => submitSurvey(values, history)}
+      >
+        Send Survey
+        <i className="material-icons right">email send</i>
+      </button>
+    </div>
   );
 };
 
-export default SurveyFormReview;
+export default connect(null, actions)(withRouter(SurveyFormReview));

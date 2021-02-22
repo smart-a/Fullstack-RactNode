@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Form, Field } from "react-final-form";
 import { Link } from "react-router-dom";
 import SurveyField, { FIELDS } from "./SurveyField";
-import validateEmails from "../../Utiles/validateEmails";
+import validateEmails, { refineEmails } from "../../Utiles/validateEmails";
 class SurveyForm extends Component {
   render() {
     const renderFields = () => {
@@ -26,6 +26,7 @@ class SurveyForm extends Component {
     };
 
     const onSubmit = (values) => {
+      values.recipients = refineEmails(values.recipients);
       this.props.onSurveySubmit(values);
     };
 

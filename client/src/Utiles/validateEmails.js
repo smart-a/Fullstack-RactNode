@@ -1,11 +1,14 @@
 const REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-export default (emails) => {
+const refineEmails = (emails) => {
+  return emails.split(",").pop() === ""
+    ? emails.slice(0, emails.length - 1)
+    : emails;
+};
+
+const validateEmails = (emails) => {
   //Ignoring an additional comma
-  const refinedEmails =
-    emails.split(",").pop() === ""
-      ? emails.slice(0, emails.length - 1)
-      : emails;
+  const refinedEmails = refineEmails(emails);
 
   //Check for invalid emails
   const invalidEmails = refinedEmails
@@ -18,3 +21,6 @@ export default (emails) => {
 
   return;
 };
+
+export default validateEmails;
+export { refineEmails };
