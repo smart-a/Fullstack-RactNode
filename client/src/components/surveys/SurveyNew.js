@@ -3,16 +3,32 @@ import SurveyForm from "./SurveyForm";
 import SurveyFormReview from "./SurveyFormReview";
 
 class SurveyNew extends Component {
-  state = { showFormReview: false };
+  state = {
+    showFormReview: false,
+    data: { title: "", subject: "", body: "", recipients: "" },
+  };
 
   renderContent() {
-    if (this.state.showFormReview) return <SurveyFormReview />;
+    if (this.state.showFormReview)
+      return (
+        <SurveyFormReview
+          onCancel={() => {
+            this.setState({ showFormReview: false });
+          }}
+          values={this.state.data}
+        />
+      );
 
     return (
       <SurveyForm
-        onSurveySubmit={() => {
-          this.setState({ showFormReview: true });
+        onSurveySubmit={(data) => {
+          //{ title, subject, body, recipients }
+          this.setState({
+            showFormReview: true,
+            data,
+          });
         }}
+        values={this.state.data}
       />
     );
   }
