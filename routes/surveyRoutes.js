@@ -1,6 +1,8 @@
+const mongoose = require("mongoose");
+const { Path } = require("path-parser");
+const { URL } = require("url");
 const requireLogin = require("../middlewares/requireLogin");
 const requireCredits = require("../middlewares/requireCredits");
-const mongoose = require("mongoose");
 const Survey = mongoose.model("surveys");
 const Mailer = require("../services/Mailer");
 const surveyTemplate = require("../services/emailTemplates/surveyTemplate");
@@ -10,14 +12,46 @@ module.exports = (app) => {
     res.send("Thank you for your feedback!");
   });
 
-  app.post("/api/surveys/:surveyId/:choice", (req, res) => {
-    res.send("Thank you for your feedback!");
-  });
+  // app.post("/api/surveys/:surveyId/:choice", (req, res) => {
+  //   res.send("Thank you for your feedback!");
+  // });
 
-  app.post("/api/surveys/webhooks", (req, res) => {
-    console.log(req.body);
-    res.send(req.body);
-    // res.redirect(200,"gvfdvv")
+  //Unique object in an array with a key
+  const uniqueObjArray = (array, key) => {
+    return [
+      ...new Map(array.map((element) => [element[key], element])).values(),
+    ];
+  };
+
+  app.post("/api/surveys/webhooks", async (req, res) => {
+    const events = req.body;
+    const p = new Path("/api/surveys/:surveyId/:choice");
+    let results = uniqueObjArray(
+      events
+        .map(({ email, url }) => {
+          const match = p.test(new URL(url).pathname);
+
+          if (match) return { email, ...match };
+        })
+        .filter((result) => result !== undefined),
+      "email"
+    ).forEach(async ({ surveyId, email, choice }) => {
+      const survey = await Survey.updateOne(
+        {
+          _id: surveyId,
+          recipients: { $elemMatch: { email: email, responded: false } },
+        },
+        {
+          $inc: { [choice]: 1 },
+          $set: { "recipients.$.responded": true },
+        },
+        { new: true }
+      );
+
+      // console.log("survey:", survey);
+    });
+
+    res.redirect("/api/surveys/feedback");
   });
 
   app.post("/api/surveys", [requireLogin, requireCredits], async (req, res) => {
