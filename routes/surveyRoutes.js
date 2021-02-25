@@ -8,13 +8,16 @@ const Mailer = require("../services/Mailer");
 const surveyTemplate = require("../services/emailTemplates/surveyTemplate");
 
 module.exports = (app) => {
-  app.post("/api/surveys/feedback", (req, res) => {
-    res.send("Thank you for your feedback!");
+  app.get("/api/surveys", [requireLogin], async (req, res) => {
+    const survey = await Survey.find({ _user: req.user.id }).select({
+      recipients: false,
+    });
+    res.status(200).send(survey);
   });
 
-  // app.post("/api/surveys/:surveyId/:choice", (req, res) => {
-  //   res.send("Thank you for your feedback!");
-  // });
+  app.get("/api/surveys/:surveyId/:choice", (req, res) => {
+    res.send("Thank you for your feedback!");
+  });
 
   //Unique object in an array with a key
   const uniqueObjArray = (array, key) => {
@@ -36,7 +39,7 @@ module.exports = (app) => {
         .filter((result) => result !== undefined),
       "email"
     ).forEach(async ({ surveyId, email, choice }) => {
-      const survey = await Survey.updateOne(
+      await Survey.updateOne(
         {
           _id: surveyId,
           recipients: { $elemMatch: { email: email, responded: false } },
@@ -50,8 +53,6 @@ module.exports = (app) => {
 
       // console.log("survey:", survey);
     });
-
-    res.redirect("/api/surveys/feedback");
   });
 
   app.post("/api/surveys", [requireLogin, requireCredits], async (req, res) => {
