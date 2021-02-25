@@ -1,13 +1,14 @@
-import e from "express";
+const REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-const REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const refineEmails = (emails) => {
+  return emails.split(",").pop() === ""
+    ? emails.slice(0, emails.length - 1)
+    : emails;
+};
 
-export default (emails) => {
+const validateEmails = (emails) => {
   //Ignoring an additional comma
-  const refinedEmails =
-    emails.split(",").pop() === ""
-      ? emails.slice(0, emails.length - 1)
-      : emails;
+  const refinedEmails = refineEmails(emails);
 
   //Check for invalid emails
   const invalidEmails = refinedEmails
@@ -20,3 +21,6 @@ export default (emails) => {
 
   return;
 };
+
+export default validateEmails;
+export { refineEmails };

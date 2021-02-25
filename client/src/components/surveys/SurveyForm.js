@@ -1,18 +1,12 @@
 import React, { Component } from "react";
 import { Form, Field } from "react-final-form";
 import { Link } from "react-router-dom";
-import SurveyField from "./SurveyField";
-import validateEmails from "../../Utiles/validateEmails";
-
-const FIELDS = [
-  { label: "Survey Title", name: "title" },
-  { label: "Subject", name: "subject" },
-  { label: "Email Body", name: "body" },
-  { label: "Emails", name: "recipients" },
-];
+import SurveyField, { FIELDS } from "./SurveyField";
+import validateEmails, { refineEmails } from "../../Utiles/validateEmails";
 class SurveyForm extends Component {
   render() {
     const renderFields = () => {
+      const values = this.props.values;
       return (
         <div>
           {FIELDS.map(({ label, name }, key) => {
@@ -23,6 +17,7 @@ class SurveyForm extends Component {
                 label={label}
                 name={name}
                 component={SurveyField}
+                initialValue={values[name]}
               />
             );
           })}
@@ -31,7 +26,8 @@ class SurveyForm extends Component {
     };
 
     const onSubmit = (values) => {
-      alert(JSON.stringify(values));
+      values.recipients = refineEmails(values.recipients);
+      this.props.onSurveySubmit(values);
     };
 
     const validate = (values) => {
@@ -57,12 +53,13 @@ class SurveyForm extends Component {
             {renderFields()}
             <Link className="red btn-flat white-text" to={"/surveys"}>
               Cancel
-              <i className="material-icons right">cancel</i>
+              <i className="material-icons left">cancel</i>
             </Link>
             <button type="submit" className="teal btn-flat right white-text">
               Next
               <i className="material-icons right">done</i>
             </button>
+            <div>{this.state}</div>
           </form>
         )}
       />

@@ -2,7 +2,14 @@
 
 import React from "react";
 
-export default ({ input, label, meta }) => {
+const FIELDS = [
+  { label: "Survey Title", name: "title" },
+  { label: "Subject", name: "subject" },
+  { label: "Body", name: "body" },
+  { label: "Recipients List", name: "recipients" },
+];
+
+const SurveyField = ({ input, label, meta }) => {
   return (
     <div style={{ marginBottom: "10px", marginTop: "10px" }}>
       <label>{label}: </label>
@@ -13,3 +20,6 @@ export default ({ input, label, meta }) => {
     </div>
   );
 };
+
+export default SurveyField;
+export { FIELDS };
