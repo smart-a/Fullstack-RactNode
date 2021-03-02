@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Form, Field } from "react-final-form";
 import { Link } from "react-router-dom";
+import { Form, Field } from "react-final-form";
 import SurveyField, { FIELDS } from "./SurveyField";
 import validateEmails, { refineEmails } from "../../Utiles/validateEmails";
+import styled from "styled-components";
 class SurveyForm extends Component {
   render() {
     const renderFields = () => {
@@ -44,25 +45,45 @@ class SurveyForm extends Component {
       return errors;
     };
 
+    const FormWrapper = styled.div`
+      width: 80%;
+      margin: 0 auto;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      padding: 10px;
+    `;
+
+    const FormTitle = styled.span`
+      font-size: 2rem;
+      font-weight: bolder;
+    `;
+
     return (
-      <Form
-        onSubmit={onSubmit}
-        validate={validate}
-        render={({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            {renderFields()}
-            <Link className="red btn-flat white-text" to={"/surveys"}>
-              Cancel
-              <i className="material-icons left">cancel</i>
-            </Link>
-            <button type="submit" className="teal btn-flat right white-text">
-              Next
-              <i className="material-icons right">done</i>
-            </button>
-            <div>{this.state}</div>
-          </form>
-        )}
-      />
+      <FormWrapper className="card">
+        <div className="card-content">
+          <FormTitle>Survey Form</FormTitle>
+          <Form
+            onSubmit={onSubmit}
+            validate={validate}
+            render={({ handleSubmit }) => (
+              <form onSubmit={handleSubmit}>
+                {renderFields()}
+                <Link className="red btn-flat white-text" to={"/surveys"}>
+                  Cancel
+                  <i className="material-icons left">cancel</i>
+                </Link>
+                <button
+                  type="submit"
+                  className="teal btn-flat right white-text"
+                >
+                  Next
+                  <i className="material-icons right">done</i>
+                </button>
+              </form>
+            )}
+          />
+        </div>
+      </FormWrapper>
     );
   }
 }

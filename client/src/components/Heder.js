@@ -20,7 +20,14 @@ class Header extends Component {
         return (
           <>
             <li>
-              <Payment />
+              <a
+                className="waves-effect waves-light btn modal-trigger"
+                // href="#payModal"
+                onClick={() => this.props.onPayClick()}
+              >
+                Add Credits
+              </a>
+              {/* <Payment /> */}
             </li>
             <li style={{ margin: "0 10px" }}>
               Credits: {this.props.auth.credits}
@@ -35,13 +42,13 @@ class Header extends Component {
 
   render() {
     return (
-      <nav>
+      <nav style={{ paddingLeft: 20, paddingRight: 20 }}>
         <div className="nav-wrapper">
           <Link
             to={this.props.auth ? "/surveys" : "/"}
             className="left brand-logo"
           >
-            Fullstack-ReactNode
+            <b>F</b>eed<b>B</b>ack
           </Link>
           <ul className="right">{this.renderContent()}</ul>
         </div>

@@ -7,20 +7,52 @@ import Header from "./Heder";
 import Landing from "./Landing";
 import Dashboard from "./Dashboard";
 import SurveyNew from "../components/surveys/SurveyNew";
+import AddPaymentModal from "./surveys/dialog/AddPaymentModal";
 
 class App extends Component {
   componentDidMount() {
     this.props.fetchUser();
   }
 
+  state = { showModal: false };
+
+  PayModal() {
+    //alert(`showModal: ${this.props.showModal}`);
+    if (this.state.showModal) {
+      document.body.style.overflowY = "hidden";
+      return (
+        <AddPaymentModal
+          showModal={this.state.showModal}
+          onModalClose={() => this.setState({ showModal: false })}
+        />
+      );
+    }
+    document.body.style.overflowY = "";
+  }
+
   render() {
     return (
       <BrowserRouter>
         <div>
-          <Header />
+          <Header
+            showModal={this.state.showModal}
+            onPayClick={() => this.setState({ showModal: true })}
+          />
+          {this.PayModal()}
           <div className="container">
             <Route exact path="/" component={Landing} />
-            <Route exact path="/surveys" component={Dashboard} />
+            <Route
+              exact
+              path="/surveys"
+              component={Dashboard}
+              // render={(props) => (
+              //   <Dashboard
+              //     {...props}
+              //     showModal={this.state.showModal}
+              //     onModalClose={() => this.setState({ showModal: false })}
+              //   />
+              // )}
+            />
 
             <Route exact path="/surveys/new" component={SurveyNew} />
           </div>
